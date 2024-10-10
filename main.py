@@ -1,25 +1,30 @@
 import tkinter as tk
 from tkinter import ttk
-import datetime
+from datetime import datetime
 
 
-class GUI:
-    def __init__(self):
+class Application(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
 
-        self.root = tk.Tk()
-        self.root.title("ドイチェ")
+        master.geometry("800x500")
+        master.title("ドイチェ")
+        self.pack()
 
-        self.frame = tk.Frame(self.root)
+        self.create_wigets()
 
-        self.frame.grid(row=0, column=0)
+    def create_wigets(self):
+        timeNow = datetime.now()
+        showedTime = timeNow.strftime("%H:%M:%S")
 
-        self.root.mainloop()
-
+        self.mainTime = tk.Label(self, font=("Koruri", "50", "bold"))
+        self.mainTime["text"] = showedTime
+        self.mainTime.pack()
 
 def main():
-    GUI()
-    return
-
+    window = tk.Tk()
+    app = Application(window)
+    app.mainloop()
 
 if __name__ == "__main__":
     main()
