@@ -1,40 +1,69 @@
 import tkinter as tk
+from tkinter import ttk
+from datetime import datetime
+
+WIDTH: int = 800
+HEIGHT: int = 500
+
 
 class Application(tk.Frame):
-    def __init__(self,master = None):
+    def __init__(self, master=None):
         super().__init__(master)
-        master.title("テキストボックス内容の取得")
-        master.geometry("350x150")
+
+        self.after_id = 0
+
+        self.timeNow = datetime.now()
+        self.hours = self.timeNow.strftime("%H")
+        self.minutes = self.timeNow.strftime("%M")
+        self.seconds = self.timeNow.strftime("%S")
+
+        master.geometry(f"{WIDTH}x{HEIGHT}")
+        master.title("ドイチェ")
         self.pack()
 
-        self.create_widgets()
-    def create_widgets(self):
-        self.lb =   tk.Label(self)
-        self.lb["text"] =   "入力"
-        self.lb.pack(side = "top")
-        self.en=    tk.Entry(self)
-        self.en.pack()
-        self.en.focus_set()
-        self.bt = tk.Button(self)
-        self.bt["text"] = "ボタン"
-        self.bt["command"] = self.print_txtval
-        self.bt.pack(side = "bottom")
+        self.create_wigets()
 
-        #フレーム
-        self.fr = tk.Frame()
-        self.fr.pack()
-        self.sc = tk.Scrollbar(self.fr)
-        self.sc.pack(side = tk.RIGHT, fill = "y")
-        self.tx = tk.Text(self.fr, width = 20, height = 5)
-        self.tx.pack()
-        self.tx["yscrollcommand"] = self.sc.set
-        self.sc["command"]      =   self.tx.yview
+    def create_wigets(self):
 
-    def print_txtval(self):
-        val_en = self.en.get()
-        self.tx.insert(tk.END, val_en)
-        self.tx.insert(tk.END,'\n')
+        self.canvas = tk.Canvas(self.master, width=WIDTH, height=100, bg="lightgreen")
+        self.canvas.pack()
+        self.canvas.create_text(
+            400,
+            50,
+            text=f"{self.hours}:{self.minutes}:{self.seconds}",
+            font=("Koruri", "72", "bold"),
+            tag="Time",
+            anchor="center",
+        )
+        self.updateTime()
+        # self.mainTime = tk.Label(self, font=("Koruri", "100", "bold"))
+        # self.mainTime["text"] = "test"
+        # self.mainTime.pack()
 
-root = tk.Tk()
-app = Application(root)
-app.mainloop()
+    def updateTime(self):
+        timeNow = datetime.now()
+
+        hours = timeNow.strftime("%H")
+        minutes = timeNow.strftime("%M")
+        seconds = timeNow.strftime("%S")
+
+        self.canvas.delete("Time")
+        self.canvas.create_text(
+            400,
+            50,
+            text=f"{hours}:{minutes}:{seconds}",
+            font=("Koruri", "72", "bold"),
+            tag="Time",
+            anchor="center",
+        )
+        self.after_id = self.after(10, self.updateTime)
+
+
+def main():
+    window = tk.Tk()
+    app = Application(window)
+    app.mainloop()
+
+
+if __name__ == "__main__":
+    main()
