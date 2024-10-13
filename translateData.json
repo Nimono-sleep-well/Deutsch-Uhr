@@ -1,0 +1,26 @@
+{
+    "under12": [
+        "null",
+        "ein",
+        "zwei",
+        "drei",
+        "vier",
+        "fünf",
+        "sechs",
+        "sieben",
+        "acht",
+        "neun",
+        "zehn",
+        "elf",
+        "zwölf",
+        "sechzehn",
+        "siebzehn"
+    ],
+    "divisible": [
+        "zehn",
+        "zwanzig",
+        "dreißig",
+        "vierzig",
+        "fünfzig"
+    ]
+}

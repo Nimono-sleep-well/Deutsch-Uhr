@@ -2,8 +2,10 @@ import tkinter as tk
 from tkinter import ttk
 from datetime import datetime
 
-WIDTH: int = 800
-HEIGHT: int = 500
+from translateDeutsch import translateNumber
+
+WIDTH: int = 2560
+HEIGHT: int = 1440
 
 
 class Application(tk.Frame):
@@ -13,9 +15,9 @@ class Application(tk.Frame):
         self.after_id = 0
 
         self.timeNow = datetime.now()
-        self.hours = self.timeNow.strftime("%H")
-        self.minutes = self.timeNow.strftime("%M")
-        self.seconds = self.timeNow.strftime("%S")
+        self.hours = int(self.timeNow.strftime("%H"))
+        self.minutes = int(self.timeNow.strftime("%M"))
+        self.seconds = int(self.timeNow.strftime("%S"))
 
         master.geometry(f"{WIDTH}x{HEIGHT}")
         master.title("ドイチェ")
@@ -25,16 +27,27 @@ class Application(tk.Frame):
 
     def create_wigets(self):
 
-        self.canvas = tk.Canvas(self.master, width=WIDTH, height=100)
+        self.canvas = tk.Canvas(self.master, width=2000, height=300, bg="lightgreen")
         self.canvas.pack()
         self.canvas.create_text(
-            400,
-            50,
-            text=f"{self.hours}:{self.minutes}:{self.seconds}",
+            1000,
+            150,
+            text=f"{self.hours}:{self.minutes}",
             font=("Koruri", "72", "bold"),
             tag="Time",
             anchor="center",
         )
+        self.canvas2 = tk.Canvas(self.master, width=2000, height=300, bg="lightblue")
+        self.canvas2.pack()
+        self.canvas2.create_text(
+            1000,
+            150,
+            text=self.seconds,
+            font=("Koruri", "72", "bold"),
+            tag="Time",
+            anchor="center"
+        )
+
         self.updateTime()
         # self.mainTime = tk.Label(self, font=("Koruri", "100", "bold"))
         # self.mainTime["text"] = "test"
@@ -47,15 +60,27 @@ class Application(tk.Frame):
         minutes = timeNow.strftime("%M")
         seconds = timeNow.strftime("%S")
 
+        
         self.canvas.delete("Time")
+        self.canvas2.delete("Time")
+
         self.canvas.create_text(
-            400,
-            50,
-            text=f"{hours}:{minutes}:{seconds}",
+            1000,
+            150,
+            text=f"{translateNumber(int(hours))} Uhr {translateNumber(int(minutes))}",
             font=("Koruri", "72", "bold"),
             tag="Time",
             anchor="center",
         )
+        self.canvas2.create_text(
+            1000,
+            150,
+            text=translateNumber(int(seconds)),
+            font=("Koruri", "72", "bold"),
+            tag="Time",
+            anchor="center"
+        )
+
         self.after_id = self.after(10, self.updateTime)
 
 
