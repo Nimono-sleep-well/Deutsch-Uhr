@@ -45,7 +45,7 @@ class Application(tk.Frame):
             text=self.seconds,
             font=("Koruri", "72", "bold"),
             tag="Time",
-            anchor="center"
+            anchor="center",
         )
 
         self.updateTime()
@@ -54,31 +54,101 @@ class Application(tk.Frame):
         # self.mainTime.pack()
 
     def updateTime(self):
+        setMode = 0
+        # 0:offiziell
+        # 1:inoffiziell
+
         timeNow = datetime.now()
 
-        hours = timeNow.strftime("%H")
+        hours = timeNow.strftime("%I")
+
         minutes = timeNow.strftime("%M")
         seconds = timeNow.strftime("%S")
 
-        
         self.canvas.delete("Time")
         self.canvas2.delete("Time")
 
-        self.canvas.create_text(
-            1000,
-            150,
-            text=f"{translateNumber(int(hours))} Uhr {translateNumber(int(minutes))}",
-            font=("Koruri", "72", "bold"),
-            tag="Time",
-            anchor="center",
-        )
+        if int(minutes) == 0:
+            self.canvas.create_text(
+                1000,
+                150,
+                text=f"{translateNumber(int(hours))} Uhr",
+                font=("Koruri", "72", "bold"),
+                tag="Time",
+                anchor="center",
+            )
+        elif int(minutes) == 15:
+            self.canvas.create_text(
+                1000,
+                150,
+                text=f"Viertel nach {translateNumber(int(hours))}",
+                font=("Koruri", "72", "bold"),
+                tag="Time",
+                anchor="center",
+            )
+        elif int(minutes) == 30:
+            self.canvas.create_text(
+                1000,
+                150,
+                text=f"halb {translateNumber(int(hours) + 1)}",
+                font=("Koruri", "72", "bold"),
+                tag="Time",
+                anchor="center",
+            )
+        elif int(minutes) == 45:
+            self.canvas.create_text(
+                1000,
+                150,
+                text=f"Viertel vor {translateNumber(int(hours) + 1)}",
+                font=("Koruri", "72", "bold"),
+                tag="Time",
+                anchor="center",
+            )
+        else:
+            if int(minutes) > 0 and int(minutes) <= 20:
+                self.canvas.create_text(
+                    1000,
+                    150,
+                    text=f"{translateNumber(int(minutes))} nach {translateNumber(int(hours))}",
+                    font=("Koruri", "72", "bold"),
+                    tag="Time",
+                    anchor="center",
+                )
+            elif int(minutes) > 20 and int(minutes) < 30:
+                self.canvas.create_text(
+                    1000,
+                    150,
+                    text=f"{translateNumber(60 - int(minutes))} vor halb {translateNumber(int(hours) + 1)}",
+                    font=("Koruri", "72", "bold"),
+                    tag="Time",
+                    anchor="center",
+                )
+            elif int(minutes) > 30 and int(minutes) <= 40:
+                self.canvas.create_text(
+                    1000,
+                    150,
+                    text=f"{translateNumber(int(minutes) - 30)} nach halb {translateNumber(int(hours) + 1)}",
+                    font=("Koruri", "72", "bold"),
+                    tag="Time",
+                    anchor="center",
+                )
+            elif int(minutes) > 40 and int(minutes) < 60:
+                self.canvas.create_text(
+                    1000,
+                    150,
+                    text=f"{translateNumber(60 - int(minutes))} vor {translateNumber(int(hours) + 1)}",
+                    font=("Koruri", "72", "bold"),
+                    tag="Time",
+                    anchor="center",
+                )
+
         self.canvas2.create_text(
             1000,
             150,
             text=translateNumber(int(seconds)),
             font=("Koruri", "72", "bold"),
             tag="Time",
-            anchor="center"
+            anchor="center",
         )
 
         self.after_id = self.after(10, self.updateTime)
